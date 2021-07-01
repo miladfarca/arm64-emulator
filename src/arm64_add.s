@@ -26,8 +26,8 @@ Disassembly of section .text:
 .text
 .globl arm64_add
 .globl _arm64_add
-_arm64_add:
 arm64_add:
+_arm64_add:
 .long 0xd10043ff
 .long 0xb9000fe0
 .long 0xb9000be1

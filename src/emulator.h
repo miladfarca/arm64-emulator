@@ -1,0 +1,1 @@
+int emulate_arm64(void *code_start, long arg1, long arg2);

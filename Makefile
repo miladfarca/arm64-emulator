@@ -2,7 +2,7 @@ VPATH=${SRC_PATH}:./src
 CC=gcc
 CFLAGS=-Wall
 ODIR=obj
-_OBJ = main.o arm64_add.o
+_OBJ = main.o arm64_add.o emulator.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c

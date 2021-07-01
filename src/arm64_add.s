@@ -11,7 +11,7 @@ add.o:     file format elf64-littleaarch64
 
 Disassembly of section .text:
 
-0000000000000000 <main>:
+0000000000000000 <add>:
    0:	d10043ff 	sub	sp, sp, #0x10
    4:	b9000fe0 	str	w0, [sp, #12]
    8:	b9000be1 	str	w1, [sp, #8]
@@ -24,8 +24,9 @@ Disassembly of section .text:
 */
 
 .text
-.global	arm64_add
-
+.globl arm64_add
+.globl _arm64_add
+_arm64_add:
 arm64_add:
 .long 0xd10043ff
 .long 0xb9000fe0

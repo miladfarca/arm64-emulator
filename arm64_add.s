@@ -1,8 +1,10 @@
 /*
-Originally compiled with:
-aarch64-linux-gnu-gcc -S add.c
 
-# aarch64-linux-gnu-objdump -d add.o
+Originally compiled with:
+aarch64-linux-gnu-gcc -c add.c
+
+Then hex values were taken using:
+aarch64-linux-gnu-objdump -d add.o
 
 add.o:     file format elf64-littleaarch64
 
@@ -18,7 +20,9 @@ Disassembly of section .text:
   14:	0b000020 	add	w0, w1, w0
   18:	910043ff 	add	sp, sp, #0x10
   1c:	d65f03c0 	ret
+
 */
+
 .text
 .global	arm64_add
 

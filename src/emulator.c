@@ -115,7 +115,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
     }
     case (ret):
     {
-      // remove the stack
+      // remove the stack.
       free(stack);
       return get_register(r0);
       break;

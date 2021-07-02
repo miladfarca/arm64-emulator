@@ -3,7 +3,7 @@
 #include "arm64_add.h"
 #include <string.h>
 
-void run_test(char if_native, int input_1, int input_2)
+void run_sample(char if_native, int input_1, int input_2)
 {
   const size_t loop_count = 1u << 25;
   if (if_native)
@@ -28,13 +28,13 @@ int main(int argc, char **argv)
   // check if we like to run tests.
   if (argc > 1)
   {
-    if (strcmp(argv[1], "--test-native") == 0)
+    if (strcmp(argv[1], "--sample-native") == 0)
     {
-      run_test(1, input_1, input_2);
+      run_sample(1, input_1, input_2);
     }
-    else if (strcmp(argv[1], "--test-emulator") == 0)
+    else if (strcmp(argv[1], "--sample-emulator") == 0)
     {
-      run_test(0, input_1, input_2);
+      run_sample(0, input_1, input_2);
     }
   }
   else

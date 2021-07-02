@@ -50,7 +50,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
   data *stack = malloc(stack_size);
   // move sp to the bottom of the stack.
   // do not alter `stack` itself as we need to free it at the end.
-  data *new_sp = stack + stack_size / sizeof(data);
+  data *new_sp = stack + (stack_size / sizeof(data));
   set_register(sp, (data)new_sp);
 
   // setup the passed arguments
@@ -116,7 +116,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
     case (ret):
     {
       // remove the stack
-      free(stack); 
+      free(stack);
       return get_register(r0);
       break;
     }

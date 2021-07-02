@@ -1,50 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef unsigned int instruction;
-long registers[32] = {0};
-
-long get_register(int reg)
+// Arm64 machine setup.
+// registers.
+#define REGISTER_COUNT 32
+enum registers
+{
+  r0,
+  r1,
+  sp = 31
+};
+typedef long data; // register size is 8 bytes.
+data registers[REGISTER_COUNT] = {0};
+data get_register(int reg)
 {
   return registers[reg];
 }
-
-void set_register(int reg, long value)
+void set_register(int reg, data value)
 {
   registers[reg] = value;
 }
 
+// subset of instructions we are going to emulate.
+enum instructions
+{
+  ldr = 0xB9400000,
+  str = 0xB9000000,
+  sub = 0xD1000000,
+  add_rr = 0xB000000,
+  add = 0x91000000,
+  ret = 0xD65F0000
+};
+typedef unsigned int instruction; // instructions are 4 bytes long.
+
+// stack size in bytes
+const int stack_size = 64;
+
+// helper functions.
 instruction get_section(instruction insn, int end, int start)
 {
   int left_diff = (sizeof(instruction) * 8) - 1 - end;
   return ((insn << left_diff) >> left_diff) >> start;
 }
 
-int emulate_arm64(void *code_start, long arg1, long arg2)
+int emulate_arm64(void *code_start, data arg1, data arg2)
 {
+  // setup the stack and stack pointer.
+  // Arm64 ABI decfines register 31 as the sp.
+  data *stack = malloc(stack_size);
+  // move sp to the bottom of the stack.
+  // do not alter `stack` itself as we need to free it at the end.
+  data *new_sp = stack + stack_size / sizeof(data);
+  set_register(sp, (data)new_sp);
 
-  // instructions
-  typedef enum instructions
-  {
-    ldr = 0xB9400000,
-    str = 0xB9000000,
-    sub = 0xD1000000,
-    add_rr = 0xB000000,
-    add = 0x91000000,
-    ret = 0xD65F0000
-  } instructions;
-
-  // setup the stack and sp, register 31 is the sp.
-  long *sp = malloc(256);
-  sp += 256 / sizeof(long);
-  registers[31] = (long)sp;
-
-  // setup the arguments
-  set_register(0, arg2);
-  set_register(1, arg1);
+  // setup the passed arguments
+  set_register(r0, arg2);
+  set_register(r1, arg1);
 
   int *fn = (void *)code_start;
-  const int number_of_insns = 8; // 8 instructions.
+  // For this example we already know there are 8 instructions to emulate.
+  const int number_of_insns = 8;
 
   for (int i = 0; i < number_of_insns; ++i)
   {
@@ -58,10 +73,9 @@ int emulate_arm64(void *code_start, long arg1, long arg2)
       int rt = get_section(insn, 4, 0);
       int rn = get_section(insn, 9, 5);
       unsigned int offset = get_section(insn, 21, 10) * 4;
-      // 32 bits.
+      // load 32 bits.
       int value = *((int *)(get_register(rn) + offset));
       set_register(rt, value);
-      //printf("%d\n", rn);
       break;
     }
     case (str):
@@ -69,9 +83,8 @@ int emulate_arm64(void *code_start, long arg1, long arg2)
       int rt = get_section(insn, 4, 0);
       int rn = get_section(insn, 9, 5);
       unsigned int offset = get_section(insn, 21, 10) * 4;
-      // 32 bits.
+      // store 32 bits.
       *((int *)(get_register(rn) + offset)) = get_register(rt);
-      //printf("str\n");
       break;
     }
     case (sub):
@@ -79,9 +92,8 @@ int emulate_arm64(void *code_start, long arg1, long arg2)
       int rd = get_section(insn, 4, 0);
       int rn = get_section(insn, 9, 5);
       int imm = get_section(insn, 21, 10);
-      long value = get_register(rn);
+      data value = get_register(rn);
       set_register(rd, value - imm);
-      //printf("sub\n");
     }
     break;
     case (add_rr):
@@ -90,7 +102,6 @@ int emulate_arm64(void *code_start, long arg1, long arg2)
       int rn = get_section(insn, 9, 5);
       int rm = get_section(insn, 20, 16);
       set_register(rd, get_register(rn) + get_register(rm));
-      //printf("add_rr\n");
     }
     break;
     case (add):
@@ -98,19 +109,21 @@ int emulate_arm64(void *code_start, long arg1, long arg2)
       int rd = get_section(insn, 4, 0);
       int rn = get_section(insn, 9, 5);
       int imm = get_section(insn, 21, 10);
-      long value = get_register(rn);
+      data value = get_register(rn);
       set_register(rd, value + imm);
-      //printf("add\n");
       break;
     }
     case (ret):
     {
-      return get_register(0);
-      //printf("ret\n");
+      // remove the stack
+      free(stack); 
+      return get_register(r0);
       break;
     }
     default:
-      printf("Unknown\n");
+      printf("Unknown instruction: %x\n", insn);
+      abort();
     }
   }
+  return 0;
 }

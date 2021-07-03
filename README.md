@@ -20,7 +20,7 @@ The result is then disassembled using `aarch64-linux-gnu-objdump -d` to reveal t
 in hex format.
 
 We then create an assembly file and add the Arm64 instructions in hex format using the `.long` directive.
-Function name `arm64_add` must also be declared as global to make sure the linker can find it at compile time.
+Function `arm64_add` must also be declared as global to make sure the linker can find it at compile time.
 
 ### Build
 Source can be build by running `make`.

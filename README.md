@@ -14,7 +14,7 @@ For 64 bit Arm:
 ```
 apt install gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
 ```
-`arm64_add.s` is first compiled with `aarch64-linux-gnu-gcc -c add.c`.
+`add.c` is first compiled using `aarch64-linux-gnu-gcc -c add.c`.
 
 The result is then disassembled using `aarch64-linux-gnu-objdump -d` to reveal the instructions
 in hex format.

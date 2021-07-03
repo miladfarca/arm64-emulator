@@ -23,7 +23,7 @@ We then create an assembly file and add the Arm64 instructions in hex format usi
 Function `arm64_add` must also be declared as global to make sure the linker can find it at compile time.
 
 ### Build
-Source can be build by running `make`.
+Source can be built by running `make`.
 
 The emulator source as well as the `arm64_add` function is compiled and linked into a single executable binary.
 The `arm64_add` function can then either be run as is on a native host or in can be emulated on other platforms.

@@ -33,7 +33,7 @@ enum instructions
 };
 typedef unsigned int instruction; // instructions are 4 bytes long.
 
-// stack size in bytes
+// stack size in bytes.
 const int stack_size = 64;
 
 // helper functions.
@@ -53,7 +53,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
   data *new_sp = stack + (stack_size / sizeof(data));
   set_register(sp, (data)new_sp);
 
-  // setup the passed arguments
+  // setup the passed arguments.
   set_register(r0, arg2);
   set_register(r1, arg1);
 
@@ -117,8 +117,8 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
     {
       // remove the stack.
       free(stack);
+      // no need to move the data to a return register, simply return the value.
       return get_register(r0);
-      break;
     }
     default:
       printf("Unknown instruction: %x\n", insn);

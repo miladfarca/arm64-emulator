@@ -1,7 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include "emulator.h"
 #include "arm64_add.h"
-#include <string.h>
 
 void run_sample(char if_native, int input_1, int input_2)
 {

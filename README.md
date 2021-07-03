@@ -33,11 +33,11 @@ To run a one time emulation:
 ```
 ./emualte_arm64
 ```
-To run an emulated sample within loop:
+To run an emulated sample within a loop:
 ```
 ./emualte_arm64 --sample-emulator
 ```
-To run a native sample within loop (This must be run on a native Arm64 host):
+To run a native sample within a loop (This must be run on a native Arm64 host):
 ```
 ./emualte_arm64 --sample-native
 ```

@@ -25,6 +25,9 @@ Function name `arm64_add` must also be declared as global to make sure the linke
 ### Build
 Source can be build by running `make`.
 
+The emulator source as well as the `arm64_add` function is compiled and linked into a single executable binary.
+The `arm64_add` function can then either be run as is on a native host or in can be emulated on other platforms.
+
 ### Run
 To run a one time emulation:
 ```

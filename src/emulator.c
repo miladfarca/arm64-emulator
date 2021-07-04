@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Arm64 machine setup.
+// arm64 machine setup.
 // registers.
 #define REGISTER_COUNT 32
 enum registers
 {
-  r0,
-  r1,
+  w0,
+  w1,
   sp = 31
 };
 typedef long data; // register size is 8 bytes.
@@ -46,7 +46,7 @@ instruction get_section(instruction insn, int end, int start)
 int emulate_arm64(void *code_start, data arg1, data arg2)
 {
   // setup the stack and stack pointer.
-  // Arm64 ABI decfines register 31 as the sp.
+  // arm64 ABI decfines register 31 as the sp.
   data *stack = malloc(stack_size);
   // move sp to the bottom of the stack.
   // do not alter `stack` itself as we need to free it at the end.
@@ -54,8 +54,8 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
   set_register(sp, (data)new_sp);
 
   // setup the passed arguments.
-  set_register(r0, arg2);
-  set_register(r1, arg1);
+  set_register(w0, arg1);
+  set_register(w1, arg2);
 
   int *fn = (void *)code_start;
   // For this example we already know there are 8 instructions to emulate.
@@ -118,7 +118,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
       // remove the stack.
       free(stack);
       // no need to move the data to a return register, simply return the value.
-      return get_register(r0);
+      return get_register(w0);
     }
     default:
       printf("Unknown instruction: %x\n", insn);

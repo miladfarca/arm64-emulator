@@ -1,5 +1,5 @@
 # arm64-emulator
-This is a small emulator, simulating 6 instructions of Arm64:
+This is a small emulator, simulating 6 instructions of arm64:
 ```
 ldr: Load
 str: Store
@@ -10,7 +10,7 @@ ret: Return
 ```
 
 ### Toolchain
-For 64 bit Arm:
+For 64 bit arm:
 ```
 apt install gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
 ```
@@ -19,7 +19,7 @@ apt install gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu
 The result is then disassembled using `aarch64-linux-gnu-objdump -d` to reveal the instructions
 in hex format.
 
-We then create an assembly file and add the Arm64 instructions in hex format using the `.long` directive.
+We then create an assembly file and add the arm64 instructions in hex format using the `.long` directive.
 Function `arm64_add` must also be declared as global to make sure the linker can find it at compile time.
 
 ### Build
@@ -37,7 +37,7 @@ To run an emulated sample within a loop:
 ```
 ./emualte_arm64 --sample-emulator
 ```
-To run a native sample within a loop (This must be run on a native Arm64 host):
+To run a native sample within a loop (This must be run on a native arm64 host):
 ```
 ./emualte_arm64 --sample-native
 ```

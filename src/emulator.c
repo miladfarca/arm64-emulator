@@ -94,16 +94,16 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
       int imm = get_section(insn, 21, 10);
       data value = get_register(rn);
       set_register(rd, value - imm);
+      break;
     }
-    break;
     case (add_rr):
     {
       int rd = get_section(insn, 4, 0);
       int rn = get_section(insn, 9, 5);
       int rm = get_section(insn, 20, 16);
       set_register(rd, get_register(rn) + get_register(rm));
+      break;
     }
-    break;
     case (add):
     {
       int rd = get_section(insn, 4, 0);

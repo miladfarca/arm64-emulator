@@ -65,7 +65,7 @@ int emulate_arm64(void *code_start, data arg1, data arg2)
   {
     // We can use the upper 16 bits of the instruction as identifier.
     instruction insn = fn[i];
-    instruction upper_insn = (insn >> 16) << 16;
+    instruction upper_insn = insn & 0xffff0000;
     switch (upper_insn)
     {
     case (ldr):
